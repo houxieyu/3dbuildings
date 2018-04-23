@@ -11,3 +11,7 @@ git add .
 git commit -m '项目框架'
 git push -u origin master
 这里使用邮件才登上
+git add -A
+git config --global user.name "hxy"
+git config --global user.email "455979052@qq.com"
+ssh keygen

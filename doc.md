@@ -4,3 +4,10 @@ eslint --init
 npm --save-dev install eslint-loader -g
 npx webpack
 npm install css-loader style-loader --save-dev
+git init
+git remote add origin https://github.com/houxieyu/3dbuildings.git
+git push -u origin master
+git add .
+git commit -m '项目框架'
+git push -u origin master
+这里使用邮件才登上

@@ -1,0 +1,25 @@
+{
+  "name": "3dbuildings",
+  "version": "1.0.0",
+  "description": "a 3dbuildings demo from shu yan xin xi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "3d",
+    "maptalks"
+  ],
+  "author": "hxy",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "css-loader": "^0.28.11",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
+  },
+  "dependencies": {
+    "maptalks": "^0.39.5"
+  }
+}

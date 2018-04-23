@@ -14,4 +14,5 @@ git push -u origin master
 git add -A
 git config --global user.name "hxy"
 git config --global user.email "455979052@qq.com"
-ssh keygen
+ssh keygen 
+test my ssh key

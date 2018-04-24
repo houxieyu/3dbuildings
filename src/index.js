@@ -18,3 +18,4 @@ var map = new maptalks.Map('map', {
     '&copy; <a href="https://carto.com/attributions">CARTO</a>'
   })
 });
+

@@ -18,14 +18,17 @@
     <div id="main" class="container"></div>
 </body>
 <script type="text/javascript">
+    var jsonaddrs =[ 'asset/data-1524056463493-H1PcbpN2z.json','asset/buildingdemo.json'];
+    var demoidx = 1;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
-    $.getJSON('asset/data-1524056463493-H1PcbpN2z.json', function(buildingsGeoJSON) {
-           
-           var builds= buildingsGeoJSON.map(function(feature){
+    $.getJSON(jsonaddrs[demoidx], function(buildingsGeoJSON) {
+           var builds= buildingsGeoJSON.features.map(function(feature){
+                var jsonheights=[feature.height||100,(feature.fwcs+1)*3]
+                var jsonpolys = [feature.polygon,feature.geometry.coordinates[0][0]]
                return {"type":"Feature",
-               "properties":{"name":Math.random().toString(),"height":feature.height||100},
-               "geometry":{"type":"Polygon","coordinates":[feature.polygon]}
+               "properties":{"name":Math.random().toString(),"height":jsonheights[demoidx]},
+               "geometry":{"type":"Polygon","coordinates":[jsonpolys[demoidx]]}
                    
                }
                

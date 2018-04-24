@@ -17,4 +17,12 @@ git config --global user.name "hxy"
 git config --global user.email "455979052@qq.com"
 ssh-keygen -t rsa -C "455979052@qq.com"
 test my ssh key
-delete ssh
+commit1
+commit2
+commit3
+commit long ao
+commit email change
+commit https
+commit https2
+commit https3
+commit https4

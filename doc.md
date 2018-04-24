@@ -15,6 +15,6 @@ git push -u origin master
 git add -A
 git config --global user.name "hxy"
 git config --global user.email "455979052@qq.com"
-ssh keygen 
+ssh-keygen -t rsa -C "455979052@qq.com"
 test my ssh key
 delete ssh

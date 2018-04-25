@@ -1,6 +1,6 @@
-var jsonaddrs = ['asset/maptalksdemo.json', 'asset/jinanxiuzheng.json'];
+var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jinanxiuzheng.json'];
 var centers = [[-74.01164278497646, 40.70769573605318], [117.04021, 36.67090]]
-var demoidx = 0;
+var demoidx = 1;
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));
 $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
@@ -24,7 +24,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     var regionsData = builds.map(function (feature) {
         return {
             name: feature.properties.name,
-            value: Math.random() * 1,
+            value: feature.properties.height,
             height: feature.properties.height,
             itemStyle: {
                 color: [1,1,1,1],
@@ -34,7 +34,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     });
 
 
-    $.getJSON('asset/data-1524055280228-SkugT242f.json', function (linesData) {
+    $.getJSON('asset/maptalksdemoroad.json', function (linesData) {
         var data = linesData.features;
 
         var hStep = 300 / (data.length - 1);
@@ -53,6 +53,14 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         }
 
         myChart.setOption({
+            visualMap: {
+                show: true,
+                min: 2,
+                max: 35,
+                inRange: {
+                    color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
+                }
+            },
             maptalks: {
                 center: centers[demoidx],
                 zoom: 14,
@@ -78,7 +86,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         intensity: 0.
                     },
                     ambientCubemap: {
-                        //texture: '/asset/data-1491838644249-ry33I7YTe.hdr',
+                        //texture: '/asset/maptalksdemotexture.hdr',
                         exposure: 1,
                         diffuseIntensity: 0.5,
                         specularIntensity: 2
@@ -95,9 +103,9 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                     silent: true,
                     instancing: true,
                     realisticMaterial: {
-                        metalness: 1,
-                        roughness: 0.2,
-                    }
+                        metalness: 0,
+                        roughness: 0.5
+                    },
                 },
                 {
                     type: 'lines3D',

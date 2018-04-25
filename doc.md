@@ -1,3 +1,11 @@
+## preinstall:
+* git
+* node
+* vscode
+* else
+    * chrome
+    * qgis
+    * cd project folder and execute npm install
 npm install webpack webpack-cli --save-dev
 npm install -g eslint
 eslint --init

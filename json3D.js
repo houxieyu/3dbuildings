@@ -1,4 +1,4 @@
-var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jinanxiuzheng.json'];
+var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jnbuilding_wgs84.json'];
 var centers = [[-74.01164278497646, 40.70769573605318], [117.04021, 36.67090]]
 var demoidx = 1;
 // 基于准备好的dom，初始化echarts实例
@@ -33,15 +33,16 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         };
     });
 
-
-    $.getJSON('asset/maptalksdemoroad.json', function (linesData) {
+    var roads = ['asset/maptalksdemoroad.json','asset/jnroad.json']
+    $.getJSON(roads[demoidx], function (linesData) {
         var data = linesData.features;
 
         var hStep = 300 / (data.length - 1);
         var taxiRoutes = [];
         var i = 0;
         for (var x in data) {
-            var lnglats = data[x].geometry.coordinates
+            var coords = [data[x].geometry.coordinates,data[x].geometry.coordinates[0]];
+            var lnglats = coords[demoidx];
             taxiRoutes.push({
                 coords: lnglats,
                 lineStyle: {
@@ -54,7 +55,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
 
         myChart.setOption({
             visualMap: {
-                show: true,
+                show: false,
                 min: 2,
                 max: 35,
                 inRange: {

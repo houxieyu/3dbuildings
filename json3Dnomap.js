@@ -65,6 +65,10 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         }
 
         myChart.setOption({
+            globe:{
+                show:false,
+                environment: '#000'
+            },
             visualMap: {
                 show: false,
                 min: 2,
@@ -73,47 +77,14 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                     color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
                 }
             },
-            maptalks: {
-                center: centers[demoidx],
-                zoom: initzoom,
-                pitch: initpitch,
-                bearing: initbearing,
-                baseLayer: {
-                    'urlTemplate': 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-                    'subdomains': ['a', 'b', 'c', 'd']
-                    // 'urlTemplate' : 'http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
-                    // 'subdomains'  : [0,1,2,3,4,5,6,7,8,9],
-                },
-                altitudeScale: 2,
-                postEffect: {
-                    enable: true,
-                    FXAA: {
-                        enable: true
-                    }
-                },
-                light: {
-                    main: {
-                        intensity: 1,
-                        shadow: true,
-                        shadowQuality: 'high'
-                    },
-                    ambient: {
-                        intensity: 0.
-                    },
-                    ambientCubemap: {
-                        texture: 'asset/maptalksdemotexture.hdr',
-                        exposure: 1,
-                        diffuseIntensity: 0.5,
-                        specularIntensity: 2
-                    }
-                }
-            },
+           
+  
             series: [
                 {
                     type: 'map3D',
-                    coordinateSystem: 'maptalks',
                     map: 'buildings',
                     data: regionsData,
+                    //coordinateSystem:'wgs84',
                     shading: 'realistic',
                     silent: true,
                     instancing: true,
@@ -121,10 +92,10 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         metalness: 0,
                         roughness: 0.5
                     },
+                    environment:'#000'
                 },
                 {
                     type: 'lines3D',
-                    coordinateSystem: 'maptalks',
                     effect: {
                         show: true,
                         constantSpeed: 1,
@@ -150,38 +121,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             ]
         });
 
-        var maptalksIns = myChart.getModel().getComponent('maptalks').getMaptalks();
-        maptalksIns.on('click', function (e) {
-            console.log(e)
-            console.log(maptalksIns.getView());
-        })
-        $('#but_animation').click(function () {
-            var camerpars = maptalksIns.getView();
-            console.log(camerpars);
-            camerpars.center = centers[demoidx];
-            camerpars.zoom = getrandom(14,20);
-            camerpars.pitch = getrandom(0,90);
-            camerpars.bearing = getrandom(-180,180);
-            try{
-            maptalksIns.animateTo(camerpars, {
-                duration: 5000
-            });
-            }
-            catch(err){}
-            console.log(camerpars);
-        });
-        $('#but_exeanimation').click(function () {
-            var camerpars = maptalksIns.getView();
-            console.log(camerpars);
-            camerpars.center = centers[demoidx];
-            camerpars.zoom =  $('#zoom').val();
-            camerpars.pitch = $('#pitch').val();
-            camerpars.bearing = $('#bearing').val();
-            maptalksIns.animateTo(camerpars, {
-                duration: 5000
-            });
-            console.log(camerpars);
-        });
+ 
         $('#loading').text('');
     });
 

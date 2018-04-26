@@ -5,7 +5,10 @@
 * else
     * chrome
     * qgis
-    * cd project folder and execute npm install
+    * git clone https://github.com/houxieyu/3dbuildings.git
+    * cd project folder 
+    * execute npm install
+    * preview on https://houxieyu.github.io/3dbuildings/json3D.html
 npm install webpack webpack-cli --save-dev
 npm install -g eslint
 eslint --init
@@ -21,7 +24,7 @@ git commit -m '项目框架'
 git push -u origin master
 这里使用邮件才登上
 git add -A
-git config --global user.name "hxy"
+git config --global user.name "houxieyu"
 git config --global user.email "455979052@qq.com"
 ssh-keygen -t rsa -C "455979052@qq.com"
 test my ssh key

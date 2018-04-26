@@ -1,28 +1,40 @@
 var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jnbuilding_wgs84.json'];
-var centers = [[-74.01164278497646, 40.70769573605318], [117.04021, 36.67090]]
+var centers = [
+    [-74.01164278497646, 40.70769573605318],
+    [117.04021, 36.67090]
+]
 var demoidx = 1;
-var initzoom =  $('#zoom').val();
-var initbearing =  $('#bearing').val();
-var initpitch =  $('#pitch').val();
+var initzoom = $('#zoom').val();
+var initbearing = $('#bearing').val();
+var initpitch = $('#pitch').val();
 /* 相机参数 
  * bearing：水平方位角-180~180
  * pitch:俯视角0~90，0度垂直向下，90度水平
  * zoom:0~20 20离地面最近
-*/
+ */
 // 基于准备好的dom，初始化echarts实例
-function getrandom(min,max){
-    return parseInt(Math.random()*(max-min+1)+min,10);
+function getrandom(min, max) {
+    return parseInt(Math.random() * (max - min + 1) + min, 10);
 }
 var myChart = echarts.init(document.getElementById('main'));
+$('#loading').text('正在加载建筑数据...');
+console.log(new Date().toLocaleTimeString() + ' load building data start');
 $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
+    console.log(new Date().toLocaleTimeString() + ' load building data end');
     var featureobjs = [buildingsGeoJSON, buildingsGeoJSON.features];
     var builds = featureobjs[demoidx].map(function (feature) {
         var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.FWCS + 1) * 3 || 100]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
         return {
             "type": "Feature",
-            "properties": { "name": Math.random().toString(), "height": jsonheights[demoidx] },
-            "geometry": { "type": "Polygon", "coordinates": [jsonpolys[demoidx]] }
+            "properties": {
+                "name": Math.random().toString(),
+                "height": jsonheights[demoidx]
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [jsonpolys[demoidx]]
+            }
 
         }
 
@@ -31,7 +43,6 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     echarts.registerMap('buildings', {
         "features": builds
     });
-
     var regionsData = builds.map(function (feature) {
         return {
             name: feature.properties.name,
@@ -43,14 +54,18 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             }
         };
     });
-
     var roads = ['asset/maptalksdemoroad.json', 'asset/jnroad.json']
+    $('#loading').text('正在加载道路数据...');
+    console.log(new Date().toLocaleTimeString() + ' load road data start');
     $.getJSON(roads[demoidx], function (linesData) {
+        console.log(new Date().toLocaleTimeString() + ' load road data end');
+       
         var data = linesData.features;
 
         var hStep = 300 / (data.length - 1);
         var taxiRoutes = [];
         var i = 0;
+        console.log(new Date().toLocaleTimeString() + ' create road data start');
         for (var x in data) {
             var coords = [data[x].geometry.coordinates, data[x].geometry.coordinates[0]];
             var lnglats = coords[demoidx];
@@ -63,7 +78,8 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                 value: Math.random() * 200
             })
         }
-
+        console.log(new Date().toLocaleTimeString() + ' create road data end');
+        $('#loading').text('开始渲染');
         myChart.setOption({
             visualMap: {
                 show: false,
@@ -75,9 +91,8 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             },
             maptalks: {
                 center: centers[demoidx],
-                zoom: initzoom,
+                zoom: parseInt(initzoom),
                 pitch: initpitch,
-                bearing: initbearing,
                 baseLayer: {
                     'urlTemplate': 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
                     'subdomains': ['a', 'b', 'c', 'd']
@@ -85,12 +100,12 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                     // 'subdomains'  : [0,1,2,3,4,5,6,7,8,9],
                 },
                 altitudeScale: 2,
-                postEffect: {
-                    enable: true,
-                    FXAA: {
-                        enable: true
-                    }
-                },
+                // postEffect: {
+                //     enable: true,
+                //     FXAA: {
+                //         enable: true
+                //     }
+                // },
                 light: {
                     main: {
                         intensity: 1,
@@ -101,15 +116,14 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         intensity: 0.
                     },
                     ambientCubemap: {
-                        texture: 'asset/maptalksdemotexture.hdr',
+                        //texture: 'asset/maptalksdemotexture.hdr',
                         exposure: 1,
                         diffuseIntensity: 0.5,
                         specularIntensity: 2
                     }
                 }
             },
-            series: [
-                {
+            series: [{
                     type: 'map3D',
                     coordinateSystem: 'maptalks',
                     map: 'buildings',
@@ -149,7 +163,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                 }
             ]
         });
-
+        console.log(new Date().toLocaleTimeString() + ' set map option end');
         var maptalksIns = myChart.getModel().getComponent('maptalks').getMaptalks();
         maptalksIns.on('click', function (e) {
             console.log(e)
@@ -159,22 +173,21 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             var camerpars = maptalksIns.getView();
             console.log(camerpars);
             camerpars.center = centers[demoidx];
-            camerpars.zoom = getrandom(14,20);
-            camerpars.pitch = getrandom(0,90);
-            camerpars.bearing = getrandom(-180,180);
-            try{
-            maptalksIns.animateTo(camerpars, {
-                duration: 5000
-            });
-            }
-            catch(err){}
+            camerpars.zoom = getrandom(14, 20);
+            camerpars.pitch = getrandom(0, 90);
+            camerpars.bearing = getrandom(-180, 180);
+            try {
+                maptalksIns.animateTo(camerpars, {
+                    duration: 5000
+                });
+            } catch (err) {}
             console.log(camerpars);
         });
         $('#but_exeanimation').click(function () {
             var camerpars = maptalksIns.getView();
             console.log(camerpars);
             camerpars.center = centers[demoidx];
-            camerpars.zoom =  $('#zoom').val();
+            camerpars.zoom = $('#zoom').val();
             camerpars.pitch = $('#pitch').val();
             camerpars.bearing = $('#bearing').val();
             maptalksIns.animateTo(camerpars, {
@@ -183,6 +196,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             console.log(camerpars);
         });
         $('#loading').text('');
+        $('#buildinfo').show();
     });
 
 

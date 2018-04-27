@@ -100,12 +100,12 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                     // 'subdomains'  : [0,1,2,3,4,5,6,7,8,9],
                 },
                 altitudeScale: 2,
-                // postEffect: {
-                //     enable: true,
-                //     FXAA: {
-                //         enable: true
-                //     }
-                // },
+                postEffect: {
+                    enable: true,
+                    FXAA: {
+                        enable: true
+                    }
+                },
                 light: {
                     main: {
                         intensity: 1,
@@ -116,7 +116,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         intensity: 0.
                     },
                     ambientCubemap: {
-                        //texture: 'asset/maptalksdemotexture.hdr',
+                        texture: 'asset/maptalksdemotexture.hdr',
                         exposure: 1,
                         diffuseIntensity: 0.5,
                         specularIntensity: 2

@@ -102,7 +102,7 @@
             // Set the renderer on the layer
             var buildingsLyr = new FeatureLayer({
                 url: "http://124.133.27.90:6080/arcgis/rest/services/jnbuilding_demo/mapserver/0",
-                renderer: simplerenderer,
+                renderer: renderer,
                 popupTemplate: { // autocasts as new PopupTemplate()
                     title: "建筑物信息",
                     content: [{

@@ -3,7 +3,7 @@ var centers = [
     [-74.01164278497646, 40.70769573605318],
     [117.04021, 36.67090]
 ]
-var demoidx = 1;
+var demoidx = 0;
 var initzoom = $('#zoom').val();
 var initbearing = $('#bearing').val();
 var initpitch = $('#pitch').val();
@@ -22,13 +22,14 @@ console.log(new Date().toLocaleTimeString() + ' load building data start');
 $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     console.log(new Date().toLocaleTimeString() + ' load building data end');
     var featureobjs = [buildingsGeoJSON, buildingsGeoJSON.features];
+    $('#count_builds').text(featureobjs[demoidx].length.toLocaleString('arab'))
     var builds = featureobjs[demoidx].map(function (feature) {
         var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.FWCS + 1) * 3 || 100]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
         return {
             "type": "Feature",
             "properties": {
-                "name": Math.random().toString(),
+                "name": parseInt(Math.random()*100000).toString(),
                 "height": jsonheights[demoidx]
             },
             "geometry": {
@@ -59,7 +60,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     console.log(new Date().toLocaleTimeString() + ' load road data start');
     $.getJSON(roads[demoidx], function (linesData) {
         console.log(new Date().toLocaleTimeString() + ' load road data end');
-       
+        $('#count_roads').text(linesData.features.length.toLocaleString('arab'))
         var data = linesData.features;
 
         var hStep = 300 / (data.length - 1);
@@ -116,7 +117,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         intensity: 0.
                     },
                     ambientCubemap: {
-                        texture: 'asset/maptalksdemotexture.hdr',
+                        //texture: 'asset/maptalksdemotexture.hdr',
                         exposure: 1,
                         diffuseIntensity: 0.5,
                         specularIntensity: 2
@@ -135,6 +136,16 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         metalness: 0,
                         roughness: 0.5
                     },
+                    label:{
+                        show:true,
+                        formatter:(data) =>{
+                            if(parseInt(data.name)>95000)return data.name;
+                            else return '';
+                        } ,
+                        textStyle:{
+                            fontSize:8
+                        }
+                    }
                 },
                 {
                     type: 'lines3D',

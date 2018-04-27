@@ -84,8 +84,8 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         myChart.setOption({
             visualMap: {
                 show: false,
-                min: 2,
-                max: 35,
+                min: 3,
+                max: 200,
                 inRange: {
                     color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
                 }
@@ -143,7 +143,8 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                             else return '';
                         } ,
                         textStyle:{
-                            fontSize:8
+                            fontSize:10,
+                            fontWeight:'bold'
                         }
                     }
                 },
@@ -176,10 +177,14 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         });
         console.log(new Date().toLocaleTimeString() + ' set map option end');
         var maptalksIns = myChart.getModel().getComponent('maptalks').getMaptalks();
-        maptalksIns.on('click', function (e) {
-            console.log(e)
-            console.log(maptalksIns.getView());
-        })
+        // maptalksIns.on('click', function (e) {
+        //     console.log(e)
+        //     console.log(maptalksIns.getView());
+        // });
+        myChart.on('click', function (params) {
+            // 控制台打印数据的名称
+            console.log(params);
+        });
         $('#but_animation').click(function () {
             var camerpars = maptalksIns.getView();
             console.log(camerpars);

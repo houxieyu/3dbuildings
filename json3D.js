@@ -85,7 +85,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
             visualMap: {
                 show: false,
                 min: 3,
-                max: 200,
+                max: 100,
                 inRange: {
                     color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
                 }

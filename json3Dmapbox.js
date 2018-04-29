@@ -2,7 +2,7 @@
 var myChart = echarts.init(document.getElementById('main'));
 var jsonaddrs = ['asset/mapboxdemo.json', 'asset/jinanxiuzheng.json'];
 var centers = [[120.30327558517455, 31.55755415024492], [117.04021, 36.67090]]
-var demoidx = 1;
+var demoidx = 0;
 $.getJSON(jsonaddrs[demoidx], function (data) {
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWFyb242NjYiLCJhIjoiY2o2M2NmZmJ4MWc0ZDJxbnI3dmZ5OXB2MSJ9.T3trJ5Tu66Kw-w-1ELpzBA';
@@ -181,5 +181,8 @@ $.getJSON(jsonaddrs[demoidx], function (data) {
                 zlevel: -100
             }]
     });
-
+    myChart.on('click', function (params) {
+        // 控制台打印数据的名称
+        console.log(params);
+    });
 });

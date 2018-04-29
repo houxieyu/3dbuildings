@@ -20,6 +20,7 @@
     "webpack-cli": "^2.0.15"
   },
   "dependencies": {
-    "maptalks": "^0.39.5"
+    "maptalks": "^0.39.5",
+    "echarts": "^3.8.0"
   }
 }

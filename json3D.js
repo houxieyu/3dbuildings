@@ -3,7 +3,7 @@ var centers = [
     [-74.01164278497646, 40.70769573605318],
     [117.04021, 36.67090]
 ]
-var demoidx = 0;
+var jsonidx = 1;
 var initzoom = $('#zoom').val();
 var initbearing = $('#bearing').val();
 var initpitch = $('#pitch').val();
@@ -19,26 +19,25 @@ function getrandom(min, max) {
 var myChart = echarts.init(document.getElementById('main'));
 $('#loading').text('正在加载建筑数据...');
 console.log(new Date().toLocaleTimeString() + ' load building data start');
-$.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
+$.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
     console.log(new Date().toLocaleTimeString() + ' load building data end');
     var featureobjs = [buildingsGeoJSON, buildingsGeoJSON.features];
-    $('#count_builds').text(featureobjs[demoidx].length.toLocaleString('arab'))
-    var builds = featureobjs[demoidx].map(function (feature) {
+    $('#count_builds').text(featureobjs[jsonidx].length.toLocaleString('arab'))
+    var builds = featureobjs[jsonidx].map(function (feature) {
         var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.FWCS + 1) * 3 || 100]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
         return {
             "type": "Feature",
             "properties": {
                 "name": parseInt(Math.random()*100000).toString(),
-                "height": jsonheights[demoidx]
+                "height": jsonheights[jsonidx]
             },
             "geometry": {
                 "type": "Polygon",
-                "coordinates": [jsonpolys[demoidx]]
+                "coordinates": [jsonpolys[jsonidx]]
             }
 
         }
-
     })
 
     echarts.registerMap('buildings', {
@@ -58,7 +57,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
     var roads = ['asset/maptalksdemoroad.json', 'asset/jnroad.json']
     $('#loading').text('正在加载道路数据...');
     console.log(new Date().toLocaleTimeString() + ' load road data start');
-    $.getJSON(roads[demoidx], function (linesData) {
+    $.getJSON(roads[jsonidx], function (linesData) {
         console.log(new Date().toLocaleTimeString() + ' load road data end');
         $('#count_roads').text(linesData.features.length.toLocaleString('arab'))
         var data = linesData.features;
@@ -69,7 +68,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         console.log(new Date().toLocaleTimeString() + ' create road data start');
         for (var x in data) {
             var coords = [data[x].geometry.coordinates, data[x].geometry.coordinates[0]];
-            var lnglats = coords[demoidx];
+            var lnglats = coords[jsonidx];
             taxiRoutes.push({
                 coords: lnglats,
                 lineStyle: {
@@ -91,7 +90,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                 }
             },
             maptalks: {
-                center: centers[demoidx],
+                center: centers[jsonidx],
                 zoom: parseInt(initzoom),
                 pitch: initpitch,
                 baseLayer: {
@@ -137,7 +136,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
                         roughness: 0.5
                     },
                     label:{
-                        show:true,
+                        show:false,
                         formatter:(data) =>{
                             if(parseInt(data.name)>95000)return data.name;
                             else return '';
@@ -188,7 +187,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         $('#but_animation').click(function () {
             var camerpars = maptalksIns.getView();
             console.log(camerpars);
-            camerpars.center = centers[demoidx];
+            camerpars.center = centers[jsonidx];
             camerpars.zoom = getrandom(14, 20);
             camerpars.pitch = getrandom(0, 90);
             camerpars.bearing = getrandom(-180, 180);
@@ -202,7 +201,7 @@ $.getJSON(jsonaddrs[demoidx], function (buildingsGeoJSON) {
         $('#but_exeanimation').click(function () {
             var camerpars = maptalksIns.getView();
             console.log(camerpars);
-            camerpars.center = centers[demoidx];
+            camerpars.center = centers[jsonidx];
             camerpars.zoom = $('#zoom').val();
             camerpars.pitch = $('#pitch').val();
             camerpars.bearing = $('#bearing').val();

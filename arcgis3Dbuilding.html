@@ -7,6 +7,18 @@
     <title>3D城市GIS平台——济南</title>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
+    <script>
+        /*************************这段配置对
+        // var dojoConfig = {
+        //    //baseUrl:"/", //baseUrl针对dojo本身也起作用，所以这里不能开启
+        //     packages: [{
+        //         name: 'counters',
+        //         main:'counters',
+        //         location: location.pathname.replace(/\/[^/]+$/, '') + '/'
+        //     }]
+        // }
+        */
+    </script>
     <script src="https://js.arcgis.com/4.7/"></script>
 
     <style>
@@ -22,164 +34,9 @@
 
     <script>
         require([
-            "esri/Map",
-            "esri/views/SceneView",
-            "esri/layers/FeatureLayer",
-            "esri/widgets/Legend",
-            "dojo/domReady!"
-        ], function (
-            Map, SceneView, FeatureLayer, Legend
-        ) {
+            "arcgisfunc.js"
+        ], function (arcgisfunc) {
 
-            /*****************************************************************
-             * Define symbols for each unique type of building. One each for
-             * residential, condos, and other.
-             *****************************************************************/
-
-            var resSym = {
-                type: "polygon-3d", // autocasts as new PolygonSymbol3D()
-                symbolLayers: [{
-                    type: "extrude", // autocasts as new ExtrudeSymbol3DLayer()
-                    material: {
-                        color: "#FC921F"
-                    },
-                    edges: {
-                        type: "solid",
-                        color: "#72420d",
-                        size: 1.5
-                    }
-                }]
-            };
-
-            var condoSym = {
-                type: "polygon-3d", // autocasts as new PolygonSymbol3D()
-                symbolLayers: [{
-                    type: "extrude", // autocasts as new ExtrudeSymbol3DLayer()
-                    material: {
-                        color: "#9E559C"
-                    },
-                    edges: {
-                        type: "solid",
-                        color: "#4c294b",
-                        size: 1.5
-                    }
-                }]
-            };
-
-            /*****************************************************************
-             * Set each unique value directly in the renderer's constructor.
-             * At least one field must be used (in this case the "DESCLU" field).
-             * The label property of each unique value will be used to indicate
-             * the field value and symbol in the legend.
-             *
-             * The size visual variable sets the height of each building as it
-             * exists in the real world according to the "ELEVATION" field.
-             *****************************************************************/
-
-            var renderer = {
-                //type: "simple", // autocasts as new UniqueValueRenderer()
-                type:"unique-value",
-                defaultSymbol: {
-                    type: "polygon-3d", // autocasts as new PolygonSymbol3D()
-                    symbolLayers: [{
-                        type: "extrude", // autocasts as new ExtrudeSymbol3DLayer()
-                        material: {
-                            color: "#A7C636"
-                        },
-                        edges: {
-                            type: "solid",
-                            color: "#4d5b18",
-                            size: 1.5
-                        }
-                    }]
-                },
-                defaultLabel: "Other",
-                field: "FWCS",
-                uniqueValueInfos: [{
-                    value: 0,
-                    symbol: resSym,
-                    label: "DLGI301A"
-                }],
-                visualVariables: [{
-                        type: "size",
-                        field: function (x) {
-                            return (x.attributes.FWCS + 1) * 3;
-                        },
-                        valueUnit: "meters"
-                    },
-                    // {
-                    //     type: "color",
-                    //     field: function (x) {
-                    //         return (x.attributes.FWCS + 1) * 3;
-                    //     },
-                    //     stops: [{
-                    //             value: 0,
-                    //             color: "#4a0069"
-                    //         },
-                    //         {
-                    //             value: 100,
-                    //             color: "#b300ff"
-                    //         }
-                    //     ]
-                    // }
-                ]
-            };
-
-            // Set the renderer on the layer
-            var buildingsLyr = new FeatureLayer({
-                url: "http://124.133.27.90:6080/arcgis/rest/services/jnbuilding_demo/mapserver/0",
-                renderer: renderer,
-                popupTemplate: { // autocasts as new PopupTemplate()
-                    title: "建筑物信息",
-                    content: [{
-                        type: "fields",
-                        fieldInfos: [{
-                                fieldName: "FID",
-                                label: "要素ID"
-                            }, {
-                                fieldName: "YSDM",
-                                label: "要素代码"
-                            }, {
-                                fieldName: "DWMC",
-                                label: "分类名称"
-                            },
-                            {
-                                fieldName: "FWCS",
-                                label: "房屋层数"
-                            }
-                        ]
-                    }]
-                },
-                outFields: ["FID", "YSDM", "DWMC", "FWCS"],
-                //definitionExpression: "ELEVATION > 0", // show only buildings with height
-            });
-
-            var map = new Map({
-                basemap: "streets",
-                ground: "world-elevation",
-                layers: [buildingsLyr]
-            });
-
-            var view = new SceneView({
-                container: "viewDiv",
-                map: map,
-                viewingMode: 'local',
-                camera: {
-                    position: {
-                        x: 117.04021,
-                        y: 36.67090,
-                        z: 129
-                    },
-                    heading: 300,
-                    tilt: 75
-                }
-            });
-
-            var legend = new Legend({
-                view: view
-            });
-
-            view.ui.add(legend, "bottom-right");
         });
     </script>
 </head>

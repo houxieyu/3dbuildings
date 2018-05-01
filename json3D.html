@@ -11,6 +11,9 @@
     </style>
     <link rel="shortcut icon" href="favicon.ico" />
     <!-- 引入文件 -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css" rel="stylesheet" />
+
     <!-- <script src="lib/echarts.min.404.js"></script> -->
     <!-- <script src="lib/echarts-gl.min.110.js"></script> -->
     <script src="lib/echarts.min.385.js"></script>
@@ -37,12 +40,14 @@
             <h3 style="display: inline-block">道路数量：</h3>
             <h1 id="count_roads" style="display: inline-block"></h1>
             <button id="but_animation">随机动画</button>
+            <button id="but_lable">显示标签</button>
         </span>
         <span style="visibility: hidden">
-        zoom<input class="but" type="text" id="zoom" value="14">
+        zoom<input class="but" type="text" id="zoom" value="16">
         pitch<input class="but"  type="text" id="pitch" value="55">
         bearing<input class="but" type="text" id="bearing" value="60">
-        <button id="but_exeanimation">执行动画</button></span>
+        <button id="but_exeanimation">执行动画</button>
+</span>
 
     </div>
     <script src="json3D.js"></script>

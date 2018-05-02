@@ -3,7 +3,7 @@ var request = GetRequest();
 var area = request['area'];
 if(!area) area = '370102001';
 var techidx = request['tech'];
-if(!techidx) techidx = 1;
+if(!techidx) techidx = 0;
 //console.log(request)
 var effect = request['effect'];
 if(!effect || effect=='0' || effect=='false') effect = false;

@@ -4,9 +4,11 @@ var area = request['area'];
 if(!area) area = '370102001';
 var techidx = request['tech'];
 if(!techidx) techidx = 0;
+var coloridx = request['color'];
+if(!coloridx) coloridx = 0;
 //console.log(request)
 var effect = request['effect'];
-if(!effect || effect=='0' || effect=='false') effect = false;
+if(!effect || effect=='0' || effect=='false') effect = true;
 //初始全局参数
 var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jnx/'+area+'.json'];
 var jsonidx = 1;
@@ -14,6 +16,11 @@ var initzoom = $('#zoom').val();
 var initbearing = $('#bearing').val();
 var initpitch = $('#pitch').val();
 var techs = ['maptalks', 'mapbox'];
+var vmcolors =[
+        ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'],
+        ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+        ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'],
+    ] //aaron
 
 
 //获取浏览器的url参数
@@ -49,28 +56,21 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
     //记录加载时长
     console.log(new Date().toLocaleTimeString() + ' load building data end');
     var featureobjs = [buildingsGeoJSON, buildingsGeoJSON.features];
-    //格式化建筑物数量字符串格式为逗号分隔
-    $('#count_builds').text(featureobjs[jsonidx].length.toLocaleString('arab'))
     //计算中心位置
     var allcoords = [];
+    var buildcount = 0;
     //生成建筑物几何数据
     var builds = featureobjs[jsonidx].map(function (feature) {
+        buildcount += feature.geometry.coordinates.length
         allcoords.push([feature.geometry.coordinates[0][0][0][0],feature.geometry.coordinates[0][0][0][1]])
         var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.LAYERNUM + 1) * 3 || 100]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
-        return {
-            "type": "Feature",
-            "properties": {
-                "name": parseInt(Math.random() * 100000).toString() + feature.properties.NAME,
-                "height": jsonheights[jsonidx]
-            },
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [jsonpolys[jsonidx]]
-            }
-
-        }
+        feature.properties.name = parseInt(Math.random() * 100000).toString() + feature.properties.NAME;
+        feature.properties.height = jsonheights[jsonidx]
+        return feature;
     })
+    //格式化建筑物数量字符串格式为逗号分隔
+    $('#count_builds').text(buildcount.toLocaleString('arab'))
     //计算几何中心
     var centercoord = allcoords.reduce(function(x1,x2){
         return [(x1[0]+x2[0])/2,(x1[1]+x2[1])/2]
@@ -104,9 +104,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                 coords: lnglats,
                 lineStyle: {
                     color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * x))
-
                 },
-                value: Math.random() * 200
+                value: Math.random() * 30
             })
         }
         console.log(new Date().toLocaleTimeString() + ' create road data end');
@@ -172,9 +171,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                 min: 3,
                 max: 30,
                 inRange: {
-                    // color://['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
-                    //  ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-                     color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
+                     color:vmcolors[coloridx]
                 }
             },
             series: [{
@@ -189,7 +186,9 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                     label: {
                         show: true,
                         formatter: (data) => {
-                            if (parseInt(data.name) > 80000) return data.name.substring(5);
+                            // if (parseInt(data.name) > 60000) return data.name.substring(5);
+                            // else return '';
+                            if (parseInt(data.value) >= 18) return data.name.substring(5);
                             else return '';
                         },
                         textStyle: {

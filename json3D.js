@@ -106,7 +106,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                     color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * x))
 
                 },
-                value: Math.random() * 200
+                value: Math.random() * 30
             })
         }
         console.log(new Date().toLocaleTimeString() + ' create road data end');
@@ -131,6 +131,9 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             enable: effect,
             FXAA: {
                 enable: true
+            },
+            temporalSuperSampling:{
+                enable:true
             }
         };
         var realisticMaterial = { //真实材质
@@ -169,7 +172,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                 min: 3,
                 max: 30,
                 inRange: {
-                    color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                    color://['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
+                     ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
                 }
             },
             series: [{

@@ -106,7 +106,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                     color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * x))
 
                 },
-                value: Math.random() * 30
+                value: Math.random() * 200
             })
         }
         console.log(new Date().toLocaleTimeString() + ' create road data end');
@@ -122,8 +122,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             },
             ambientCubemap: { //环境光纹理
                 texture: 'asset/maptalksdemotexture.hdr',
-                exposure: 1.0, //曝光
-                diffuseIntensity: 1.0, //漫反射强度
+                exposure: 0.5, //曝光
+                diffuseIntensity: 1, //漫反射强度
                 specularIntensity: 0.5 //高光反射强度
             }
         };
@@ -137,7 +137,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             }
         };
         var realisticMaterial = { //真实材质
-            metalness: 0.2, //金属度
+            metalness: 0.5, //金属度
             roughness: 0 //粗糙度
         };
 
@@ -172,8 +172,9 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                 min: 3,
                 max: 30,
                 inRange: {
-                    color://['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
-                     ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                    // color://['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
+                    //  ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                     color: ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'] //aaron
                 }
             },
             series: [{
@@ -183,8 +184,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                     data: regionsData,
                     silent: true,
                     instancing: true,
-                   //  shading: 'color', //着色效果,color、lambert、realistic
-                    // realisticMaterial: realisticMaterial,
+                    shading: 'realistic', //着色效果,color、lambert、realistic
+                    realisticMaterial: realisticMaterial,
                     label: {
                         show: true,
                         formatter: (data) => {

@@ -63,7 +63,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
     var builds = featureobjs[jsonidx].map(function (feature) {
         buildcount += feature.geometry.coordinates.length
         allcoords.push([feature.geometry.coordinates[0][0][0][0],feature.geometry.coordinates[0][0][0][1]])
-        var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.LAYERNUM + 1) * 3 || 100]
+        if(feature.properties.LAYERNUM==0)feature.properties.LAYERNUM=1
+        var jsonheights = [feature.height || 100, feature.properties == null ? null : feature.properties.LAYERNUM * 3 || 100]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
         feature.properties.name = parseInt(Math.random() * 100000).toString() + feature.properties.NAME;
         feature.properties.height = jsonheights[jsonidx]

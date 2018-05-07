@@ -5,7 +5,7 @@ if(!area) area = '370102001';
 var techidx = request['tech'];
 if(!techidx) techidx = 0;
 var coloridx = request['color'];
-if(!coloridx) coloridx = 0;
+if(!coloridx) coloridx = 1;
 //console.log(request)
 var effect = request['effect'];
 if(!effect || effect=='1' || effect=='true') effect = true;
@@ -18,6 +18,7 @@ var initbearing = $('#bearing').val();
 var initpitch = $('#pitch').val();
 var techs = ['maptalks', 'mapbox'];
 var vmcolors =[
+    ['#3300FF','#6600BF','#990080','#CC0040','#FF0000'],
         ['#696868', '#594e76', '#635177', '#7b5675', '#94596d', '#da6b58', '#ff6029', '#f23e19', '#e42e16'],
         ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
         ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'],

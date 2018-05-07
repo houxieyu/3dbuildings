@@ -8,7 +8,8 @@ var coloridx = request['color'];
 if(!coloridx) coloridx = 0;
 //console.log(request)
 var effect = request['effect'];
-if(!effect || effect=='0' || effect=='false') effect = true;
+if(!effect || effect=='1' || effect=='true') effect = true;
+else effect=false;
 //初始全局参数
 var jsonaddrs = ['asset/maptalksdemobuilding.json', 'asset/jnx/'+area+'.json'];
 var jsonidx = 1;
@@ -115,7 +116,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             main: { //主光源
                 intensity: 1, //强度
                 shadow: true, //阴影
-                shadowQuality: 'mudium'
+                shadowQuality: 'high'
             },
             ambient: { //全局环境光
                 intensity: 0, //强度
@@ -148,10 +149,13 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             pitch: initpitch,
             baseLayer: {
                 'urlTemplate': 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-                'subdomains': ['a', 'b', 'c', 'd']
+                'subdomains': ['a', 'b', 'c', 'd'],
+                // 'urlTemplate': 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/WMTS/tile/1.0.0/ChinaOnlineStreetPurplishBlue/default/GoogleMapsCompatible/{z}/{y}/{x}.png',
+                // maxAvailableZoom : 16,
                 // 'urlTemplate' : 'http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
                 // 'subdomains'  : [0,1,2,3,4,5,6,7,8,9],
             },
+            
             altitudeScale: 2,
             postEffect: postEffect,
             light: light,
@@ -207,7 +211,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                         trailWidth: 3,
                         trailLength: 1,
                         trailOpacity: 1,
-                        spotIntensity: 10
+                        spotIntensity: 40
                     },
 
                     blendMode: 'lighter',

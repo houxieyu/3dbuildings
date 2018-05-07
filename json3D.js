@@ -124,9 +124,9 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             },
             ambientCubemap: { //环境光纹理
                 texture: 'asset/maptalksdemotexture.hdr',
-                exposure: 0.5, //曝光
-                diffuseIntensity: 1, //漫反射强度
-                specularIntensity: 0.5 //高光反射强度
+                exposure: 1, //曝光
+                diffuseIntensity: 0.5, //漫反射强度
+                specularIntensity: 2 //高光反射强度
             }
         };
         var postEffect = {
@@ -139,8 +139,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             }
         };
         var realisticMaterial = { //真实材质
-            metalness: 0.5, //金属度
-            roughness: 0 //粗糙度
+            metalness: 1, //金属度
+            roughness: 0.2 //粗糙度
         };
 
         //var lightoption

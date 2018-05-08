@@ -239,10 +239,10 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             var maptalksIns = myChart.getModel().getComponent('maptalks').getMaptalks();
             else
             var mapboxIns = myChart.getModel().getComponent('mapbox').getMapbox();
-        // maptalksIns.on('click', function (e) {
-        //     console.log(e)
-        //     console.log(maptalksIns.getView());
-        // });
+        maptalksIns.on('click', function (e) {
+            console.log(e)
+            console.log(maptalksIns.getView());
+        });
         myChart.on('click', function (params) {
             // 控制台打印数据的名称
             console.log(params);

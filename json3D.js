@@ -63,10 +63,15 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
     var buildcount = 0;
     //生成建筑物几何数据
     var builds = featureobjs[jsonidx].map(function (feature) {
+        if(jsonidx == 0)        return {"type":"Feature",
+        "properties":{"name":Math.random().toString(),"height":feature.height||100},
+        "geometry":{"type":"Polygon","coordinates":[feature.polygon]}
+            
+        }
         buildcount += feature.geometry.coordinates.length
         allcoords.push([feature.geometry.coordinates[0][0][0][0],feature.geometry.coordinates[0][0][0][1]])
-        if(feature.properties.LAYERNUM==0)feature.properties.LAYERNUM=1
-        var jsonheights = [feature.height || 100, feature.properties == null ? null : feature.properties.LAYERNUM * 3 || 100]
+        // if(feature.properties.LAYERNUM==0)feature.properties.LAYERNUM=1
+        var jsonheights = [feature.height || 100, feature.properties == null ? null : (feature.properties.LAYERNUM+1) * 3]
         var jsonpolys = [feature.polygon, feature.geometry == null ? null : feature.geometry.coordinates[0][0]]
         feature.properties.name = parseInt(Math.random() * 100000).toString() + feature.properties.NAME;
         feature.properties.height = jsonheights[jsonidx]
@@ -75,9 +80,11 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
     //格式化建筑物数量字符串格式为逗号分隔
     $('#count_builds').text(buildcount.toLocaleString('arab'))
     //计算几何中心
+    if(jsonidx != 0){
     var centercoord = allcoords.reduce(function(x1,x2){
         return [(x1[0]+x2[0])/2,(x1[1]+x2[1])/2]
     })
+}
     echarts.registerMap('buildings', {
         "features": builds
     });
@@ -108,7 +115,8 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                 lineStyle: {
                     color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * x))
                 },
-                value: Math.random() * 30
+                value: Math.random() * 200,
+                visualMap: false
             })
         }
         console.log(new Date().toLocaleTimeString() + ' create road data end');
@@ -139,7 +147,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             }
         };
         var realisticMaterial = { //真实材质
-            metalness: 1, //金属度
+            metalness: 0.5, //金属度
             roughness: 0.2 //粗糙度
         };
 
@@ -212,7 +220,7 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
                         trailWidth: 3,
                         trailLength: 1,
                         trailOpacity: 1,
-                        spotIntensity: 40
+                        spotIntensity: 20
                     },
 
                     blendMode: 'lighter',
@@ -239,10 +247,10 @@ $.getJSON(jsonaddrs[jsonidx], function (buildingsGeoJSON) {
             var maptalksIns = myChart.getModel().getComponent('maptalks').getMaptalks();
             else
             var mapboxIns = myChart.getModel().getComponent('mapbox').getMapbox();
-        maptalksIns.on('click', function (e) {
-            console.log(e)
-            console.log(maptalksIns.getView());
-        });
+        // maptalksIns.on('click', function (e) {
+        //     console.log(e)
+        //     console.log(maptalksIns.getView());
+        // });
         myChart.on('click', function (params) {
             // 控制台打印数据的名称
             console.log(params);
